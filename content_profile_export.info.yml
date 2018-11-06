@@ -1,0 +1,7 @@
+name: 'content_profile_export'
+type: module
+description: 'This module is used to copy all the fields from the User Profile Enabled Content Type in Drupal 6 to Drupal 8 User Profile'
+core: 8.x
+package: 'custom'
+dependencies:
+  - profile

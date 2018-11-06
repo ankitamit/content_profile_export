@@ -1,0 +1,7 @@
+content_profile_export.admin_settings:
+  path: '/admin/config/content_profile_export'
+  defaults:
+    _form: '\Drupal\content_profile_export\Form\ContentProfileConfiguration'
+    _title: 'Content Profile Module to export Fields and Values'
+  requirements:
+    _permission: 'administer site configuration'
