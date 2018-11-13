@@ -16,5 +16,6 @@ function drush_content_profile_export_contentprofilefields() {
 
 	$contentProfileFieldObj = \Drupal::service('content_profile_field_service');
 	$contentProfileFieldObj->generateFields();
+        drush_log('Done SucessFully');
 }
 

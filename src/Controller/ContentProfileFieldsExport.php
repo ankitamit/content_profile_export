@@ -73,7 +73,7 @@ class ContentProfileFieldsExport extends ControllerBase {
 				try {
 					FieldStorageConfig::create($field)->save();
 				} catch(\Exception $exception) {
-					print '<p>' . Error::renderExceptionSafe($exception) . '</p><hr />';
+                                        \Drupal::logger('content_profile_export_create_error')->notice($exception);
 				}
 			}
                         else
@@ -88,8 +88,8 @@ class ContentProfileFieldsExport extends ControllerBase {
 	                if(empty($getExistingInstanceBundle)) {
                                  try {
 					FieldConfig::create($field_definition)->save();
-			         } catch(\Exception $e) {
-				print '<p>' . Error::renderExceptionSafe($exception) . '</p><hr />';
+			         } catch(\Exception $exception) {
+                                 \Drupal::logger('content_profile_export_instance_error')->notice($exception); 
 			         }
                         }
                         else
@@ -101,5 +101,11 @@ class ContentProfileFieldsExport extends ControllerBase {
 
 
 	}
+
+
+
+    
+
+
 
 } 
