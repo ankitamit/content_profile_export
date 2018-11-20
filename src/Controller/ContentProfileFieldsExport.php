@@ -104,7 +104,94 @@ class ContentProfileFieldsExport extends ControllerBase {
 
 
 
-    
+
+  public function convertFieldType() {
+
+
+                $getObjectField = \Drupal::entityTypeManager()->getStorage('field_storage_config');
+                $getObjectFieldInstance =  \Drupal::entityTypeManager()->getStorage('field_config');
+
+ $loadField =  \Drupal\field\Entity\FieldStorageConfig::loadByName('node', 'field_constcoordinator_member');
+
+
+ $loadInstance = $getObjectFieldInstance->load('node.elections.field_bliptv');
+echo ' **load field is **';
+print_r($loadField);
+
+echo ' ** instance load is ***';
+print_r($loadInstance)."\n\n";
+die;
+
+
+
+               $contentTypeName = 'productioncalls';
+
+                $getMigrationDBObject =   \Drupal\Core\Database\Database::getConnection('default', 'migrate');
+
+               $sqlQueryMigration = "select field_name,label, widget_type,widget_module, widget_settings,description  from content_node_field_instance where widget_type = 'text_textfield' and type_name = :typeName";
+
+
+              $queryObject = $getMigrationDBObject->query($sqlQueryMigration,array(':typeName'=>$contentTypeName));
+
+               while($getTextFields = $queryObject->fetchAssoc()) {
+
+                $getTextFields['widget_settings'] = unserialize($getTextFields['widget_settings']);
+                $getSizeTextField = $getTextFields['widget_settings']['size'];
+
+
+$fieldName = $getTextFields['field_name'];
+
+if($fieldName == 'field_productionofficepostalcode')
+  continue;
+
+ try {
+
+
+       // FieldConfig::loadByName('node', $contentTypeName, $getTextFields['field_name'])->delete();
+
+      
+      
+       $fieldStorageConfig =  FieldStorageConfig::loadByName('node', $getTextFields['field_name']);
+       if($fieldStorageConfig)
+        $fieldStorageConfig->delete();
+}
+  catch(\Exception $e) { 
+  echo ' ** here excpetion is ***'.$e->getMessage()."\n\n";
+  }
+
+echo ' ** doing for field name **'.$fieldName."\n\n";
+   
+
+
+FieldStorageConfig::create(array(
+  'field_name' => $getTextFields['field_name'],
+  'entity_type' => 'node',
+  'type' => 'string',
+  'cardinality' => 1,
+  'settings'=>array('max_length'=>'255'),
+))->save();
+
+
+
+FieldConfig::create([
+  'field_name' => $getTextFields['field_name'],
+  'entity_type' => 'node',
+  'bundle' => $contentTypeName,
+  'label' => $getTextFields['label'],
+  'description'=>$getTextFields['description']
+])->save();
+
+
+echo ' **created fro field name ***'.$fieldName."\n\n\n";
+
+}
+
+echo ' ** done here **';
+die;
+ 
+}
+
+
 
 
 

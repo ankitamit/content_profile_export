@@ -7,6 +7,18 @@ function content_profile_export_drush_command()  {
 			'aliases'=> array('contentProfileField')
 			);
 
+     
+        $items['textplainlongToTextPlain'] = array(
+                        'description' => 'Export Fields Here',
+                        'aliases'=> array('textplainlongToTextPlain')
+                        );
+
+
+       $items['fieldSourceToDestination'] = array(
+                        'description'=> 'Field From Source To Destination',
+                        'aliases'=> array('fieldSourceDestination'),
+                        );
+
 
 	return $items;
 }
@@ -19,3 +31,16 @@ function drush_content_profile_export_contentprofilefields() {
         drush_log('Done SucessFully');
 }
 
+function drush_content_profile_export_textplainlongToTextPlain() {
+
+        $contentProfileFieldObj = \Drupal::service('content_profile_field_service');
+        $contentProfileFieldObj->convertFieldType();
+        drush_log('Done SucessFully');
+}
+
+function drush_content_profile_export_fieldSourceToDestination() {
+
+         $contentFieldsObject = \Drupal::service('fields_source_destination');
+        $contentFieldsObject->generateFields();
+          echo ' ** done here ***';
+}
